@@ -86,13 +86,13 @@ public class StarDecoration extends RecyclerView.ItemDecoration {
                 c.drawRect(left, top, right, top + bottom, headerPaint);
                 String groupName = adapter.getGroupName(position);
                 textPaint.getTextBounds(groupName, 0, groupName.length(), textRect);
-                c.drawText(groupName, left + 20, top + bottom
+                c.drawText(groupName, parent.getWidth() / 2 - textRect.width() / 2, top + bottom
                         - groupHeaderHeight / 2 + textRect.height() / 2, textPaint);
             } else {
                 c.drawRect(left, top, right, top + groupHeaderHeight, headerPaint);
                 String groupName = adapter.getGroupName(position);
                 textPaint.getTextBounds(groupName, 0, groupName.length(), textRect);
-                c.drawText(groupName, left + 20, top + groupHeaderHeight / 2 + textRect.height() / 2, textPaint);
+                c.drawText(groupName, parent.getWidth() / 2 - textRect.width() / 2, top + groupHeaderHeight / 2 + textRect.height() / 2, textPaint);
             }
         }
 
