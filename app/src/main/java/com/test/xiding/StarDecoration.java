@@ -52,7 +52,7 @@ public class StarDecoration extends RecyclerView.ItemDecoration {
                 if (isGroupHeader) {
                     //绘制矩形
                     c.drawRect(left, view.getTop() - groupHeaderHeight, right, view.getTop(), headerPaint);
-                    String groupName = adapter.getGroupName(i);
+                    String groupName = adapter.getGroupName(position);
                     textPaint.getTextBounds(groupName, 0, groupName.length(), textRect);
                     c.drawText(groupName, left + 20, view.getTop() - groupHeaderHeight / 2 + textRect.height() / 2, textPaint);
                 } else {
