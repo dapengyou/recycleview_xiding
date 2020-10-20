@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -57,7 +58,7 @@ public class StarDecoration extends RecyclerView.ItemDecoration {
                     c.drawText(groupName, left + 20, view.getTop() - groupHeaderHeight / 2 + textRect.height() / 2, textPaint);
                 } else {
                     //分割线
-                    c.drawRect(left, view.getTop() - 1, right, view.getTop() , headerPaint);
+                    c.drawRect(left, view.getTop() - 1, right, view.getTop(), headerPaint);
                 }
             }
         }
@@ -67,6 +68,34 @@ public class StarDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
+        if (parent.getAdapter() instanceof StarAdapter) {
+            StarAdapter adapter = (StarAdapter) parent.getAdapter();
+            // 返回可见区域内的第一个item的position
+            int position = ((LinearLayoutManager) parent.getLayoutManager()).findFirstVisibleItemPosition();
+            // 获取对应position的View
+            View itemView = parent.findViewHolderForAdapterPosition(position).itemView;
+
+            int left = parent.getPaddingLeft();
+            int right = parent.getWidth() - parent.getPaddingRight();
+            int top = parent.getPaddingTop();
+            boolean isGroupHeader = adapter.isGroupHeader(position + 1);//是否是头部
+
+            if (isGroupHeader) {
+                int bottom = Math.min(groupHeaderHeight, itemView.getBottom() - parent.getPaddingTop());
+
+                c.drawRect(left, top, right, top + bottom, headerPaint);
+                String groupName = adapter.getGroupName(position);
+                textPaint.getTextBounds(groupName, 0, groupName.length(), textRect);
+                c.drawText(groupName, left + 20, top + bottom
+                        - groupHeaderHeight / 2 + textRect.height() / 2, textPaint);
+            } else {
+                c.drawRect(left, top, right, top + groupHeaderHeight, headerPaint);
+                String groupName = adapter.getGroupName(position);
+                textPaint.getTextBounds(groupName, 0, groupName.length(), textRect);
+                c.drawText(groupName, left + 20, top + groupHeaderHeight / 2 + textRect.height() / 2, textPaint);
+            }
+        }
+
     }
 
     @Override
